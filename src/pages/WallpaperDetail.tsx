@@ -50,7 +50,6 @@ export const WallpaperDetail: React.FC = () => {
     const found = wallpapers.find(w => w.id === id);
     if (found) {
       setWallpaper(found);
-      // Get 4 random wallpapers that are not the current one for suggestions
       const otherWallpapers = wallpapers.filter(w => w.id !== id);
       const shuffled = [...otherWallpapers].sort(() => 0.5 - Math.random());
       setSuggestions(shuffled.slice(0, 4));
@@ -71,7 +70,6 @@ export const WallpaperDetail: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search, wallpaper]);
 
-  // Reset load state when id changes
   useEffect(() => {
     setIsLoaded(false);
   }, [id]);
@@ -179,7 +177,7 @@ export const WallpaperDetail: React.FC = () => {
                     {downloadStatus === 'preparing' ? (
                          <span className="animate-pulse">... INITIALIZING ...</span>
                     ) : downloadStatus === 'downloading' ? (
-                        <span>>> TRANSFERRING >></span>
+                        <span>{'>>'} TRANSFERRING {'>>'}</span>
                     ) : downloadStatus === 'complete' ? (
                         <span>[ COMPLETE ]</span>
                     ) : (
