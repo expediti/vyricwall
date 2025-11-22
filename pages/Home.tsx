@@ -4,6 +4,7 @@ import { CATEGORIES, Category, Wallpaper } from '../types';
 import { useAppContext } from '../App';
 import { generateWallpaperImage } from '../services/geminiService';
 import { WallpaperCard } from '../components/WallpaperCard';
+import { SEO } from '../components/SEO';
 
 export const Home: React.FC = () => {
   const { wallpapers, addWallpaper } = useAppContext();
@@ -70,12 +71,23 @@ export const Home: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      <SEO 
+        title="Vyric - Retro OS AI Wallpaper Generator | Free 4K"
+        description="Generate and download unique, high-quality 4K wallpapers powered by AI. Retro aesthetic, minimalist design, and free to use for phone and desktop."
+        keywords="AI wallpaper, free 4k wallpaper, retro background, pixel art, generator, vyric os"
+      />
       
       {/* Hero Section */}
       <div className="mb-12 border-b-4 border-double border-retro-black dark:border-white pb-8">
         <div className="flex flex-col items-start justify-center gap-4">
-            <div className="bg-retro-orange text-white px-2 py-1 text-lg uppercase">
-               :: System Notification ::
+            <div className="flex items-center gap-3 border-2 border-retro-orange bg-white dark:bg-black px-4 py-2 shadow-[4px_4px_0_0_#ff4500]">
+                <div className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full bg-retro-orange opacity-75"></span>
+                  <span className="relative inline-flex h-3 w-3 bg-retro-orange"></span>
+                </div>
+                <span className="text-retro-orange font-bold uppercase tracking-widest text-lg">
+                    User_Online
+                </span>
             </div>
             <h1 className="text-6xl md:text-9xl text-retro-black dark:text-white leading-none uppercase">
               Undefined<br/>Elegance_
@@ -89,7 +101,7 @@ export const Home: React.FC = () => {
 
       {/* Categories - Unique Chip Design */}
       <div className="mb-12">
-        <div className="flex flex-wrap gap-3">
+        <nav aria-label="Categories" className="flex flex-wrap gap-3">
             <button
                 onClick={() => handleCategoryClick('All')}
                 className={`
@@ -124,12 +136,12 @@ export const Home: React.FC = () => {
                 </span>
                 </button>
             ))}
-        </div>
+        </nav>
       </div>
 
       {/* Error Message */}
       {generationError && (
-        <div className="mb-8 p-4 border-2 border-red-500 bg-red-100 text-red-600 font-bold uppercase flex items-center gap-4">
+        <div className="mb-8 p-4 border-2 border-red-500 bg-red-100 text-red-600 font-bold uppercase flex items-center gap-4" role="alert">
             <span>[ ERROR ]</span>
             <span>{generationError}</span>
         </div>
@@ -141,11 +153,11 @@ export const Home: React.FC = () => {
              <p className="text-2xl uppercase">Directory Empty.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" aria-label="Wallpaper Gallery">
           {displayedWallpapers.map((wp, index) => (
             <WallpaperCard key={wp.id} wallpaper={wp} index={index} />
           ))}
-        </div>
+        </section>
       )}
       
       {isGenerating && (

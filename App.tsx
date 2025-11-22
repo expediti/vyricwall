@@ -1,6 +1,7 @@
 import React, { useState, createContext, useContext, useEffect, ReactNode } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { WallpaperDetail } from './pages/WallpaperDetail';
 import { Wallpaper } from './types';
@@ -106,32 +107,26 @@ const ScrollToTop = () => {
   return null;
 };
 
-const DotBackground = () => (
-  <div className="fixed inset-0 z-0 pointer-events-none opacity-10 dark:opacity-20 bg-dot-pattern dark:bg-dot-pattern-dark bg-dot-grid" />
-);
-
 // --- Main App Component ---
 const App: React.FC = () => {
   return (
     <AppProvider>
       <HashRouter>
         <ScrollToTop />
-        <DotBackground />
-        <div className="relative z-10 min-h-screen flex flex-col selection:bg-retro-orange selection:text-white">
-          <Header />
-          <main className="flex-grow pt-8">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/wallpaper/:id" element={<WallpaperDetail />} />
-            </Routes>
-          </main>
-          <footer className="p-8 mt-12 text-center border-t-2 border-retro-black/10 dark:border-white/10">
-            <div className="inline-block px-4 py-2">
-              <p className="text-lg uppercase tracking-widest">
-                SYSTEM STATUS: ONLINE &copy; {new Date().getFullYear()} VYRIC.OS
-              </p>
-            </div>
-          </footer>
+        <div className="relative min-h-screen flex flex-col selection:bg-retro-orange selection:text-white">
+          {/* Scrolling Background Layer - Absolute to container, not fixed to viewport */}
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-10 dark:opacity-20 bg-dot-pattern dark:bg-dot-pattern-dark bg-dot-grid" />
+          
+          <div className="relative z-10 flex flex-col flex-grow">
+            <Header />
+            <main className="flex-grow pt-8">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/wallpaper/:id" element={<WallpaperDetail />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
         </div>
       </HashRouter>
     </AppProvider>

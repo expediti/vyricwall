@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../App';
 import { Wallpaper } from '../types';
 import { WallpaperCard } from '../components/WallpaperCard';
+import { SEO } from '../components/SEO';
 
 // Helper for typewriter effect
 interface TypewriterTextProps {
@@ -96,22 +97,28 @@ export const WallpaperDetail: React.FC = () => {
 
   return (
     <div className="min-h-[calc(100vh-5rem)] p-4 md:p-8 bg-retro-bg dark:bg-retro-black">
+      <SEO 
+        title={`${wallpaper.category} Wallpaper - Free Download | Vyric OS`}
+        description={`Download this high-resolution ${wallpaper.category} wallpaper for free. Asset ID: ${wallpaper.id}. Optimized for ${wallpaper.aspectRatio === '16:9' ? 'Laptop' : wallpaper.aspectRatio === '9:16' ? 'Phone' : 'Mobile/Desktop'} screens.`}
+        keywords={`${wallpaper.category}, free wallpaper, 4k wallpaper, retro aesthetic, digital art, ${wallpaper.prompt.split(' ').slice(0,3).join(', ')}`}
+        image={imgSrc.startsWith('http') ? imgSrc : undefined}
+      />
       
-      <div className="max-w-7xl mx-auto border-2 border-retro-black dark:border-white bg-white dark:bg-black shadow-retro dark:shadow-[8px_8px_0_0_#ffffff] mb-16">
+      <article className="max-w-7xl mx-auto border-2 border-retro-black dark:border-white bg-white dark:bg-black shadow-retro dark:shadow-[8px_8px_0_0_#ffffff] mb-16">
         {/* Header Bar */}
-        <div className="bg-retro-black dark:bg-white text-white dark:text-black p-2 flex justify-between items-center">
+        <header className="bg-retro-black dark:bg-white text-white dark:text-black p-2 flex justify-between items-center">
             <span className="uppercase text-xl">:: File_Inspector_V1.0 ::</span>
-            <Link to="/" className="hover:bg-retro-orange hover:text-white px-2 uppercase text-lg">
+            <Link to="/" className="hover:bg-retro-orange hover:text-white px-2 uppercase text-lg" aria-label="Close">
                 [ X CLOSE ]
             </Link>
-        </div>
+        </header>
 
         <div className="flex flex-col lg:flex-row">
             {/* Image Area */}
             <div className="lg:w-2/3 p-4 border-b-2 lg:border-b-0 lg:border-r-2 border-retro-black dark:border-white flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 min-h-[50vh]">
                  <img 
                     src={imgSrc} 
-                    alt={wallpaper.prompt}
+                    alt={`Detailed view of ${wallpaper.prompt}`}
                     className={`max-h-[70vh] w-auto border-2 border-retro-black dark:border-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
                     onLoad={() => setIsLoaded(true)}
                 />
@@ -133,24 +140,24 @@ export const WallpaperDetail: React.FC = () => {
                     </div>
 
                     {/* Stats Table */}
-                    <div className="w-full border-2 border-retro-black dark:border-white text-lg mb-8">
-                        <div className="flex border-b-2 border-retro-black dark:border-white">
-                            <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase">Asset</div>
-                            <div className="w-1/2 p-2">
+                    <div className="w-full border-2 border-retro-black dark:border-white text-lg mb-8" role="table" aria-label="Wallpaper Specifications">
+                        <div className="flex border-b-2 border-retro-black dark:border-white" role="row">
+                            <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase" role="rowheader">Asset</div>
+                            <div className="w-1/2 p-2" role="cell">
                                 <span className="bg-retro-orange text-white px-2 font-bold">FREE</span>
                             </div>
                         </div>
-                        <div className="flex border-b-2 border-retro-black dark:border-white">
-                            <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase">Ratio</div>
-                            <div className="w-1/2 p-2">{wallpaper.aspectRatio || "3:4"}</div>
+                        <div className="flex border-b-2 border-retro-black dark:border-white" role="row">
+                            <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase" role="rowheader">Ratio</div>
+                            <div className="w-1/2 p-2" role="cell">{wallpaper.aspectRatio || "3:4"}</div>
                         </div>
-                        <div className="flex border-b-2 border-retro-black dark:border-white">
-                            <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase">Size</div>
-                            <div className="w-1/2 p-2">High Res</div>
+                        <div className="flex border-b-2 border-retro-black dark:border-white" role="row">
+                            <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase" role="rowheader">Size</div>
+                            <div className="w-1/2 p-2" role="cell">High Res</div>
                         </div>
-                        <div className="flex">
-                            <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase">Status</div>
-                            <div className="w-1/2 p-2 text-green-600 dark:text-green-400">
+                        <div className="flex" role="row">
+                            <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase" role="rowheader">Status</div>
+                            <div className="w-1/2 p-2 text-green-600 dark:text-green-400" role="cell">
                                 <TypewriterText key={`status-${id}`} text="Ready" speed={100} delay={500} />
                             </div>
                         </div>
@@ -167,6 +174,7 @@ export const WallpaperDetail: React.FC = () => {
                             : 'bg-retro-orange text-white'
                         }
                     `}
+                    aria-label="Download Wallpaper"
                 >
                     {downloadStatus === 'preparing' ? (
                          <span className="animate-pulse">... INITIALIZING ...</span>
@@ -180,10 +188,10 @@ export const WallpaperDetail: React.FC = () => {
                 </button>
             </div>
         </div>
-      </div>
+      </article>
 
       {/* Suggestions Section */}
-      <div className="max-w-7xl mx-auto">
+      <section className="max-w-7xl mx-auto">
         <div className="flex items-center gap-2 mb-6 border-b-2 border-retro-black dark:border-white pb-2">
             <div className="w-4 h-4 bg-retro-orange"></div>
             <h2 className="text-2xl md:text-3xl uppercase">Suggested_Datastreams</h2>
@@ -194,7 +202,7 @@ export const WallpaperDetail: React.FC = () => {
                 <WallpaperCard key={w.id} wallpaper={w} index={index} />
             ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 };
