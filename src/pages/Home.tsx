@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CATEGORIES, Category, Wallpaper } from '../types';
@@ -94,8 +93,8 @@ export const Home: React.FC = () => {
               Undefined<br/>Elegance_
             </h1>
             <p className="text-xl md:text-2xl text-retro-black/60 dark:text-white/60 font-mono">
-              > Initiating premium pixel render sequence...<br/>
-              > Loading unique assets...
+              {'>'} Initiating premium pixel render sequence...<br/>
+              {'>'} Loading unique assets...
             </p>
         </div>
       </div>
@@ -165,10 +164,10 @@ export const Home: React.FC = () => {
          <div className="fixed bottom-8 right-8 w-64 bg-white dark:bg-black border-2 border-retro-black dark:border-white shadow-retro z-50">
              <div className="bg-retro-black dark:bg-white text-white dark:text-black px-2 py-1 text-sm uppercase font-bold flex justify-between">
                 <span>System_Worker.exe</span>
-                <span>[-]</span>
+                <span>[ - ]</span>
              </div>
              <div className="p-4 flex flex-col gap-2">
-                <p className="text-lg uppercase text-retro-black dark:text-white animate-pulse">>> RENDERING PIXELS...</p>
+                <p className="text-lg uppercase text-retro-black dark:text-white animate-pulse">{'>>'} RENDERING PIXELS...</p>
                 <div className="h-4 border-2 border-retro-black dark:border-white p-0.5">
                     <div className="h-full bg-retro-orange w-full animate-[pulse_1s_ease-in-out_infinite]"></div>
                 </div>
