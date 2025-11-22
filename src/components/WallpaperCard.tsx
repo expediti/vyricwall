@@ -4,7 +4,6 @@ import { Wallpaper } from '../types';
 
 interface WallpaperCardProps {
   wallpaper: Wallpaper;
-  // index removed since it was unused
 }
 
 export const WallpaperCard: React.FC<WallpaperCardProps> = ({ wallpaper }) => {

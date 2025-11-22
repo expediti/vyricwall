@@ -1,72 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CATEGORIES, Category, Wallpaper } from '../types';
+import { CATEGORIES, Category } from '../types';
 import { useAppContext } from '../App';
-import { generateWallpaperImage } from '../services/geminiService';
 import { WallpaperCard } from '../components/WallpaperCard';
 import { SEO } from '../components/SEO';
 
 export const Home: React.FC = () => {
-  const { wallpapers, addWallpaper } = useAppContext();
+  const { wallpapers } = useAppContext();
   const [selectedCategory, setSelectedCategory] = useState<Category | string>('All');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generationError, setGenerationError] = useState<string | null>(null);
   const location = useLocation();
   
   useEffect(() => {
     if (location.state && (location.state as any).searchQuery) {
       const query = (location.state as any).searchQuery;
       setSelectedCategory(query);
-      handleGenerate(query, 'Custom Search');
       window.history.replaceState({}, document.title);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state]);
 
   const displayedWallpapers = wallpapers.filter(w => {
     if (selectedCategory === 'All') return true;
+    
+    // Strict category match
     if (CATEGORIES.includes(selectedCategory as Category)) {
       return w.category === selectedCategory;
     }
-    return true;
+    
+    // Search/Keyword match
+    const searchLower = selectedCategory.toLowerCase();
+    return (
+        w.category.toLowerCase().includes(searchLower) ||
+        w.prompt.toLowerCase().includes(searchLower)
+    );
   });
 
   const handleCategoryClick = (cat: Category) => {
     setSelectedCategory(cat);
-    setGenerationError(null);
-  };
-
-  const handleGenerate = async (promptInput?: string, categoryInput?: string) => {
-    if (isGenerating) return;
-    
-    setIsGenerating(true);
-    setGenerationError(null);
-
-    const categoryToUse = categoryInput || (selectedCategory === 'All' ? 'Abstract' : selectedCategory);
-    const promptToUse = promptInput || categoryToUse;
-
-    // Determine aspect ratio based on category
-    let ratio = "3:4";
-    if (categoryToUse === 'Laptop') ratio = "16:9";
-    if (categoryToUse === 'Phone') ratio = "9:16";
-
-    const result = await generateWallpaperImage(promptToUse, categoryToUse, ratio);
-
-    if (result.success && result.imageBase64) {
-      const newWallpaper: Wallpaper = {
-        id: Date.now().toString(),
-        url: result.imageBase64,
-        category: categoryToUse,
-        prompt: promptToUse,
-        createdAt: Date.now(),
-        aspectRatio: ratio
-      };
-      addWallpaper(newWallpaper);
-    } else {
-      setGenerationError(result.error || "Failed to generate.");
-    }
-
-    setIsGenerating(false);
   };
 
   return (
@@ -93,8 +62,8 @@ export const Home: React.FC = () => {
               Undefined<br/>Elegance_
             </h1>
             <p className="text-xl md:text-2xl text-retro-black/60 dark:text-white/60 font-mono">
-              {'>'} Initiating premium pixel render sequence...<br/>
-              {'>'} Loading unique assets...
+              &gt; Initiating premium pixel render sequence...<br/>
+              &gt; Loading unique assets...
             </p>
         </div>
       </div>
@@ -139,14 +108,6 @@ export const Home: React.FC = () => {
         </nav>
       </div>
 
-      {/* Error Message */}
-      {generationError && (
-        <div className="mb-8 p-4 border-2 border-red-500 bg-red-100 text-red-600 font-bold uppercase flex items-center gap-4" role="alert">
-            <span>[ ERROR ]</span>
-            <span>{generationError}</span>
-        </div>
-      )}
-
       {/* Grid */}
       {displayedWallpapers.length === 0 ? (
         <div className="py-32 border-2 border-dashed border-retro-black dark:border-white flex flex-col items-center justify-center text-retro-black dark:text-white opacity-50">
@@ -154,25 +115,10 @@ export const Home: React.FC = () => {
         </div>
       ) : (
         <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" aria-label="Wallpaper Gallery">
-          {displayedWallpapers.map((wp, index) => (
-            <WallpaperCard key={wp.id} wallpaper={wp} index={index} />
+          {displayedWallpapers.map((wp) => (
+            <WallpaperCard key={wp.id} wallpaper={wp} />
           ))}
         </section>
-      )}
-      
-      {isGenerating && (
-         <div className="fixed bottom-8 right-8 w-64 bg-white dark:bg-black border-2 border-retro-black dark:border-white shadow-retro z-50">
-             <div className="bg-retro-black dark:bg-white text-white dark:text-black px-2 py-1 text-sm uppercase font-bold flex justify-between">
-                <span>System_Worker.exe</span>
-                <span>[ - ]</span>
-             </div>
-             <div className="p-4 flex flex-col gap-2">
-                <p className="text-lg uppercase text-retro-black dark:text-white animate-pulse">{'>>'} RENDERING PIXELS...</p>
-                <div className="h-4 border-2 border-retro-black dark:border-white p-0.5">
-                    <div className="h-full bg-retro-orange w-full animate-[pulse_1s_ease-in-out_infinite]"></div>
-                </div>
-             </div>
-         </div>
       )}
     </div>
   );

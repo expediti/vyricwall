@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 
 interface SEOProps {
@@ -26,12 +27,8 @@ export const SEO: React.FC<SEOProps> = ({
       let element = document.querySelector(selector);
       if (!element) {
         element = document.createElement('meta');
-        // Instead of unused attr variable, set attributes directly
-        if (selector.includes('name=')) {
-          element.setAttribute('name', selector.split('name="')[1].split('"')[0]);
-        } else if (selector.includes('property=')) {
-          element.setAttribute('property', selector.split('property="')[1].split('"')[0]);
-        }
+        const [attr, value] = selector.split(/[=\]]/).filter(Boolean)[0].split('[');
+        element.setAttribute(value, selector.split('=')[1].replace(/['"\]]/g, ''));
         document.head.appendChild(element);
       }
       element.setAttribute('content', content);

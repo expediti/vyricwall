@@ -9,7 +9,6 @@ import { Wallpaper } from './types';
 // --- Context Setup ---
 interface AppContextType {
   wallpapers: Wallpaper[];
-  addWallpaper: (wallpaper: Wallpaper) => void;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
 }
@@ -66,7 +65,7 @@ const INITIAL_WALLPAPERS: Wallpaper[] = [
 ];
 
 const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [wallpapers, setWallpapers] = useState<Wallpaper[]>(INITIAL_WALLPAPERS);
+  const [wallpapers] = useState<Wallpaper[]>(INITIAL_WALLPAPERS);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined') {
         const saved = localStorage.getItem('vyric-theme');
@@ -87,12 +86,8 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
-  const addWallpaper = (wallpaper: Wallpaper) => {
-    setWallpapers(prev => [wallpaper, ...prev]);
-  };
-
   return (
-    <AppContext.Provider value={{ wallpapers, addWallpaper, theme, toggleTheme }}>
+    <AppContext.Provider value={{ wallpapers, theme, toggleTheme }}>
       {children}
     </AppContext.Provider>
   );
