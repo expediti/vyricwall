@@ -4,10 +4,10 @@ import { Wallpaper } from '../types';
 
 interface WallpaperCardProps {
   wallpaper: Wallpaper;
-  index?: number;
+  // index removed since it was unused
 }
 
-export const WallpaperCard: React.FC<WallpaperCardProps> = ({ wallpaper, index = 0 }) => {
+export const WallpaperCard: React.FC<WallpaperCardProps> = ({ wallpaper }) => {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
