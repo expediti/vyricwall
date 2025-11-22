@@ -27,8 +27,11 @@ export const SEO: React.FC<SEOProps> = ({
       let element = document.querySelector(selector);
       if (!element) {
         element = document.createElement('meta');
-        const [attr, value] = selector.split(/[=\]]/).filter(Boolean)[0].split('[');
-        element.setAttribute(value, selector.split('=')[1].replace(/['"\]]/g, ''));
+        // Fix: Remove unused variable 'attr' by skipping the first destructured element
+        const [, value] = selector.split(/[=\]]/).filter(Boolean)[0].split('[');
+        const attributeValue = selector.split('=')[1].replace(/['"\]]/g, '');
+        
+        element.setAttribute(value, attributeValue);
         document.head.appendChild(element);
       }
       element.setAttribute('content', content);
