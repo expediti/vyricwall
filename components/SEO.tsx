@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 
 interface SEOProps {
@@ -12,7 +13,7 @@ interface SEOProps {
 export const SEO: React.FC<SEOProps> = ({ 
   title, 
   description, 
-  keywords = "AI wallpaper, retro wallpaper, 4K background, phone wallpaper, laptop wallpaper, minimalist, generated art",
+  keywords = "digital wallpaper, retro wallpaper, 4K background, phone wallpaper, laptop wallpaper, minimalist, art",
   image, 
   url,
   type = 'website'

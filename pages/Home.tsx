@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CATEGORIES, Category, Wallpaper } from '../types';
@@ -72,9 +73,9 @@ export const Home: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
       <SEO 
-        title="Vyric - Retro OS AI Wallpaper Generator | Free 4K"
-        description="Generate and download unique, high-quality 4K wallpapers powered by AI. Retro aesthetic, minimalist design, and free to use for phone and desktop."
-        keywords="AI wallpaper, free 4k wallpaper, retro background, pixel art, generator, vyric os"
+        title="Vyric - Retro OS Wallpaper Database | Free 4K"
+        description="Access and download unique, high-quality 4K wallpapers. Retro aesthetic, minimalist design, and free to use for phone and desktop."
+        keywords="wallpaper, free 4k wallpaper, retro background, pixel art, database, vyric os"
       />
       
       {/* Hero Section */}

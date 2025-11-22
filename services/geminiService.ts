@@ -1,8 +1,6 @@
-import { GoogleGenAI } from "@google/genai";
 
-// Initialize API client
-// NOTE: process.env.API_KEY is injected by the environment.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Service to handle wallpaper retrieval/generation
+// Replaced proprietary AI with open endpoint for demonstration
 
 export const generateWallpaperImage = async (
   prompt: string, 
@@ -10,41 +8,22 @@ export const generateWallpaperImage = async (
   aspectRatio: string = "3:4"
 ): Promise<{ success: boolean; imageBase64?: string; error?: string }> => {
   try {
-    // Construct a descriptive prompt for high-quality wallpaper
-    const enhancedPrompt = `
-      Create a stunning, high-resolution 4k digital wallpaper.
-      Subject: ${prompt}
-      Style: Minimalist, Cinematic, Vibrant colors, sharp details, no text.
-      Category Context: ${category}
-      
-      The image should be suitable for a wallpaper, visually balanced and aesthetically pleasing.
-    `;
+    // Simulate system processing time
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image',
-      contents: {
-        parts: [{ text: enhancedPrompt }],
-      },
-      config: {
-        imageConfig: {
-          aspectRatio: aspectRatio, 
-        }
-      }
-    });
+    // Determine dimensions
+    const width = aspectRatio === "16:9" ? 1280 : 768;
+    const height = aspectRatio === "16:9" ? 720 : 1024;
+    
+    // Use an open generative endpoint or stock image source that doesn't require API keys
+    // This maintains the "generator" functionality of the app without Gemini
+    const encodedPrompt = encodeURIComponent(`${prompt} ${category} minimalist wallpaper high quality`);
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=true&seed=${Math.floor(Math.random() * 1000)}`;
 
-    // Extract image data from parts
-    if (response.candidates && response.candidates[0]?.content?.parts) {
-        for (const part of response.candidates[0].content.parts) {
-            if (part.inlineData && part.inlineData.data) {
-                return { success: true, imageBase64: part.inlineData.data };
-            }
-        }
-    }
-
-    return { success: false, error: "No image data received." };
+    return { success: true, imageBase64: imageUrl };
 
   } catch (error: any) {
-    console.error("Gemini API Error:", error);
-    return { success: false, error: error.message || "Failed to generate image." };
+    console.error("Asset Retrieval Error:", error);
+    return { success: false, error: "Failed to retrieve asset stream." };
   }
 };
