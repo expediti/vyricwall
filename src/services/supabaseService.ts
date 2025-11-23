@@ -8,7 +8,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export async function getWallpapers() {
   const { data, error } = await supabase
     .from('wallpapers')
-    .select('id, image_link, name, ratio, size, category, prompt, createdAt')
+    .select('*')
     .order('id', { ascending: false });
   if (error) throw error;
   return data;

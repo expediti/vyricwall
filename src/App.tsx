@@ -4,11 +4,9 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { WallpaperDetail } from './pages/WallpaperDetail';
-import { Wallpaper } from './types';
 
 // --- Context Setup ---
 interface AppContextType {
-  wallpapers: Wallpaper[];
   theme: 'light' | 'dark';
   toggleTheme: () => void;
 }
@@ -21,51 +19,7 @@ export const useAppContext = () => {
   return context;
 };
 
-const INITIAL_WALLPAPERS: Wallpaper[] = [
-  {
-    id: 'init-1',
-    url: 'https://images.unsplash.com/photo-1623934199716-dc28818a6ec7?q=80&w=1000&auto=format&fit=crop',
-    prompt: 'Iron Man Mark LXXXV',
-    category: 'Iron Man',
-    createdAt: Date.now(),
-    aspectRatio: '3:4'
-  },
-  {
-    id: 'init-2',
-    url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop',
-    prompt: 'Industrial Gears & Machineries',
-    category: 'Machineries',
-    createdAt: Date.now(),
-    aspectRatio: '3:4'
-  },
-  {
-    id: 'init-3',
-    url: 'https://images.unsplash.com/photo-1635805737707-575885ab0820?q=80&w=1000&auto=format&fit=crop',
-    prompt: 'The Amazing Spider-Man',
-    category: 'Spider-Man',
-    createdAt: Date.now(),
-    aspectRatio: '3:4'
-  },
-  {
-    id: 'init-4',
-    url: 'https://images.unsplash.com/photo-1608889175123-8ee362201f81?q=80&w=1000&auto=format&fit=crop',
-    prompt: 'Avengers Assemble',
-    category: 'Avengers',
-    createdAt: Date.now(),
-    aspectRatio: '3:4'
-  },
-  {
-    id: 'init-5',
-    url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop',
-    prompt: 'Pandora Bioluminescence',
-    category: 'Avatar',
-    createdAt: Date.now(),
-    aspectRatio: '3:4'
-  }
-];
-
 const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [wallpapers] = useState<Wallpaper[]>(INITIAL_WALLPAPERS);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined') {
         const saved = localStorage.getItem('vyric-theme');
@@ -87,7 +41,7 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <AppContext.Provider value={{ wallpapers, theme, toggleTheme }}>
+    <AppContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </AppContext.Provider>
   );
