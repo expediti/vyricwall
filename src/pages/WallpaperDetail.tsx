@@ -5,6 +5,42 @@ import { SEO } from '../components/SEO';
 import { getWallpapers } from '../services/supabaseService';
 import { Wallpaper } from '../types';
 
+// Retro Typewriter Component
+const TypewriterText: React.FC<{ text: string; delay?: number; speed?: number }> = ({ text, delay = 0, speed = 50 }) => {
+  const [displayedText, setDisplayedText] = useState('');
+  
+  useEffect(() => {
+    setDisplayedText('');
+    let currentIndex = 0;
+    let typeTimeout: ReturnType<typeof setTimeout>;
+    let startTimeout: ReturnType<typeof setTimeout>;
+
+    const typeChar = () => {
+        if (currentIndex < text.length) {
+            setDisplayedText(text.slice(0, currentIndex + 1));
+            currentIndex++;
+            typeTimeout = setTimeout(typeChar, speed);
+        }
+    };
+
+    startTimeout = setTimeout(() => {
+        typeChar();
+    }, delay);
+
+    return () => {
+        clearTimeout(startTimeout);
+        clearTimeout(typeTimeout);
+    };
+  }, [text, delay, speed]);
+
+  return (
+    <span className="inline-flex items-center">
+      {displayedText}
+      <span className="animate-pulse ml-1 text-retro-orange">_</span>
+    </span>
+  );
+};
+
 export const WallpaperDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -84,19 +120,23 @@ export const WallpaperDetail: React.FC = () => {
           {/* Data Panel */}
           <div className="lg:w-1/3 p-8 flex flex-col justify-between">
             <div>
-              <h1 className="text-4xl uppercase text-retro-orange leading-none mb-4">
-                {wallpaper.name}
+              <h1 className="text-4xl uppercase text-retro-orange leading-none mb-4 min-h-[1em]">
+                <TypewriterText text={wallpaper.name} delay={100} speed={40} />
               </h1>
 
               {/* Stats Table */}
               <div className="w-full border-2 border-retro-black dark:border-white text-lg mb-8">
                 <div className="flex border-b-2 border-retro-black dark:border-white">
                   <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase">Ratio</div>
-                  <div className="w-1/2 p-2">{wallpaper.ratio || "3:4"}</div>
+                  <div className="w-1/2 p-2">
+                    <TypewriterText text={wallpaper.ratio || "3:4"} delay={600} speed={60} />
+                  </div>
                 </div>
                 <div className="flex border-b-2 border-retro-black dark:border-white">
                   <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase">Size</div>
-                  <div className="w-1/2 p-2">{wallpaper.size}</div>
+                  <div className="w-1/2 p-2">
+                    <TypewriterText text={wallpaper.size} delay={1000} speed={60} />
+                  </div>
                 </div>
                 {wallpaper.category && (
                   <div className="flex">
