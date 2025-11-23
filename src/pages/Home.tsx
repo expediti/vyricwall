@@ -118,7 +118,6 @@ export const Home: React.FC = () => {
                 `}
             >
               <span className="flex items-center gap-2">
-                {/* Small chip decoration */}
                 <span className="text-xs opacity-50">/</span>
                 {cat}
               </span>
