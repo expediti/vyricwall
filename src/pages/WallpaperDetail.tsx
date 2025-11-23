@@ -6,37 +6,35 @@ import { getWallpapers } from '../services/supabaseService';
 import { Wallpaper } from '../types';
 
 // Retro Typewriter Component
-const TypewriterText: React.FC<{ text: string; delay?: number; speed?: number }> = ({ text, delay = 0, speed = 50 }) => {
-  const [displayedText, setDisplayedText] = useState('');
-  
+const RetroTypewriter: React.FC<{ text: string | number; delay?: number; className?: string }> = ({ text, delay = 0, className = "" }) => {
+  const [displayText, setDisplayText] = useState('');
+  const [showCursor, setShowCursor] = useState(false);
+  const strText = String(text);
+
   useEffect(() => {
-    setDisplayedText('');
-    let currentIndex = 0;
-    let typeTimeout: ReturnType<typeof setTimeout>;
-    let startTimeout: ReturnType<typeof setTimeout>;
+    setDisplayText('');
+    setShowCursor(false);
 
-    const typeChar = () => {
-        if (currentIndex < text.length) {
-            setDisplayedText(text.slice(0, currentIndex + 1));
-            currentIndex++;
-            typeTimeout = setTimeout(typeChar, speed);
+    const startTimeout = setTimeout(() => {
+      setShowCursor(true);
+      let i = 0;
+      const intervalId = setInterval(() => {
+        setDisplayText(strText.substring(0, i + 1));
+        i++;
+        if (i >= strText.length) {
+          clearInterval(intervalId);
         }
-    };
-
-    startTimeout = setTimeout(() => {
-        typeChar();
+      }, 50); // Typing speed
+      return () => clearInterval(intervalId);
     }, delay);
 
-    return () => {
-        clearTimeout(startTimeout);
-        clearTimeout(typeTimeout);
-    };
-  }, [text, delay, speed]);
+    return () => clearTimeout(startTimeout);
+  }, [strText, delay]);
 
   return (
-    <span className="inline-flex items-center">
-      {displayedText}
-      <span className="animate-pulse ml-1 text-retro-orange">_</span>
+    <span className={`${className} inline-flex items-center`}>
+      {displayText}
+      <span className={`inline-block w-3 h-[1em] bg-retro-orange ml-1 ${showCursor ? 'animate-pulse' : 'opacity-0'}`}></span>
     </span>
   );
 };
@@ -108,40 +106,42 @@ export const WallpaperDetail: React.FC = () => {
         </header>
 
         <div className="flex flex-col lg:flex-row">
-          {/* Image Area */}
-          <div className="lg:w-2/3 p-4 border-b-2 lg:border-b-0 lg:border-r-2 border-retro-black dark:border-white flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 min-h-[50vh]">
+          {/* Image Area - Removed extra padding and background to prevent 'black border' */}
+          <div className="lg:w-2/3 border-b-2 lg:border-b-0 lg:border-r-2 border-retro-black dark:border-white relative bg-transparent flex items-center justify-center">
             <img
               src={imgSrc}
               alt={`Detailed view of ${wallpaper.name}`}
-              className="max-h-[70vh] w-auto border-2 border-retro-black dark:border-white"
+              className="w-full h-auto max-h-[85vh] object-contain"
             />
           </div>
 
           {/* Data Panel */}
           <div className="lg:w-1/3 p-8 flex flex-col justify-between">
             <div>
-              <h1 className="text-4xl uppercase text-retro-orange leading-none mb-4 min-h-[1em]">
-                <TypewriterText text={wallpaper.name} delay={100} speed={40} />
-              </h1>
+              <div className="mb-4 min-h-[4rem]">
+                <h1 className="text-4xl uppercase text-retro-orange leading-none break-words">
+                  <RetroTypewriter text={wallpaper.name} delay={200} />
+                </h1>
+              </div>
 
               {/* Stats Table */}
               <div className="w-full border-2 border-retro-black dark:border-white text-lg mb-8">
                 <div className="flex border-b-2 border-retro-black dark:border-white">
                   <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase">Ratio</div>
-                  <div className="w-1/2 p-2">
-                    <TypewriterText text={wallpaper.ratio || "3:4"} delay={600} speed={60} />
+                  <div className="w-1/2 p-2 font-mono">
+                    <RetroTypewriter text={wallpaper.ratio || "3:4"} delay={800} />
                   </div>
                 </div>
                 <div className="flex border-b-2 border-retro-black dark:border-white">
                   <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase">Size</div>
-                  <div className="w-1/2 p-2">
-                    <TypewriterText text={wallpaper.size} delay={1000} speed={60} />
+                  <div className="w-1/2 p-2 font-mono">
+                    <RetroTypewriter text={wallpaper.size} delay={1400} />
                   </div>
                 </div>
                 {wallpaper.category && (
                   <div className="flex">
                     <div className="w-1/2 p-2 border-r-2 border-retro-black dark:border-white bg-neutral-100 dark:bg-neutral-800 uppercase">Category</div>
-                    <div className="w-1/2 p-2">{wallpaper.category}</div>
+                    <div className="w-1/2 p-2 uppercase">{wallpaper.category}</div>
                   </div>
                 )}
               </div>
