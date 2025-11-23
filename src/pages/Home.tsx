@@ -35,10 +35,19 @@ export const Home: React.FC = () => {
 
   const displayedWallpapers = wallpapers.filter(w => {
     if (selectedCategory === 'All') return true;
+    
+    // Check if it's a known category
     if (CATEGORIES.includes(selectedCategory as Category) && w.category) {
       return w.category === selectedCategory;
     }
-    return true;
+    
+    // Otherwise treat as search query - search in name, category, or prompt
+    const searchLower = selectedCategory.toLowerCase();
+    return (
+      w.name?.toLowerCase().includes(searchLower) ||
+      w.category?.toLowerCase().includes(searchLower) ||
+      w.prompt?.toLowerCase().includes(searchLower)
+    );
   });
 
   const handleCategoryClick = (cat: Category) => {
@@ -54,6 +63,7 @@ export const Home: React.FC = () => {
         keywords="wallpaper, free 4k wallpaper, retro background, pixel art, database, vyric os"
       />
 
+      {/* Hero Section */}
       <div className="mb-12 border-b-4 border-double border-retro-black dark:border-white pb-8">
         <div className="flex flex-col items-start justify-center gap-4">
           <div className="flex items-center gap-3 border-2 border-retro-orange bg-white dark:bg-black px-4 py-2 shadow-[4px_4px_0_0_#ff4500]">
@@ -75,11 +85,18 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
+      {/* Categories - Unique Chip Design */}
       <div className="mb-12">
         <nav aria-label="Categories" className="flex flex-wrap gap-3">
           <button
             onClick={() => handleCategoryClick('All')}
-            className={`group relative px-3 py-1 text-sm md:text-base font-bold uppercase border-2 transition-all duration-100 ${selectedCategory === 'All' ? 'bg-retro-black dark:bg-white text-white dark:text-black border-retro-black dark:border-white shadow-none translate-y-1' : 'bg-white dark:bg-black text-retro-black dark:text-white border-retro-black dark:border-white shadow-retro-sm hover:-translate-y-0.5 hover:shadow-retro hover:bg-retro-orange hover:text-white dark:hover:bg-retro-orange'}`}
+            className={`
+              group relative px-3 py-1 text-sm md:text-base font-bold uppercase border-2 transition-all duration-100
+              ${selectedCategory === 'All'
+                ? 'bg-retro-black dark:bg-white text-white dark:text-black border-retro-black dark:border-white shadow-none translate-y-1'
+                : 'bg-white dark:bg-black text-retro-black dark:text-white border-retro-black dark:border-white shadow-retro-sm hover:-translate-y-0.5 hover:shadow-retro hover:bg-retro-orange hover:text-white dark:hover:bg-retro-orange'
+              }
+            `}
           >
             <span className="flex items-center gap-2">
               <span className={`block w-2 h-2 ${selectedCategory === 'All' ? 'bg-retro-orange' : 'bg-retro-black dark:bg-white group-hover:bg-white'}`}></span>
@@ -90,7 +107,13 @@ export const Home: React.FC = () => {
             <button
               key={cat}
               onClick={() => handleCategoryClick(cat)}
-              className={`group relative px-3 py-1 text-sm md:text-base font-bold uppercase border-2 transition-all duration-100 ${selectedCategory === cat ? 'bg-retro-black dark:bg-white text-white dark:text-black border-retro-black dark:border-white shadow-none translate-y-1' : 'bg-white dark:bg-black text-retro-black dark:text-white border-retro-black dark:border-white shadow-retro-sm hover:-translate-y-0.5 hover:shadow-retro hover:bg-retro-orange hover:text-white dark:hover:bg-retro-orange'}`}
+              className={`
+                group relative px-3 py-1 text-sm md:text-base font-bold uppercase border-2 transition-all duration-100
+                ${selectedCategory === cat
+                  ? 'bg-retro-black dark:bg-white text-white dark:text-black border-retro-black dark:border-white shadow-none translate-y-1'
+                  : 'bg-white dark:bg-black text-retro-black dark:text-white border-retro-black dark:border-white shadow-retro-sm hover:-translate-y-0.5 hover:shadow-retro hover:bg-retro-orange hover:text-white dark:hover:bg-retro-orange'
+                }
+              `}
             >
               <span className="flex items-center gap-2">
                 <span className="text-xs opacity-50">/</span>
@@ -101,6 +124,7 @@ export const Home: React.FC = () => {
         </nav>
       </div>
 
+      {/* Error Message */}
       {generationError && (
         <div className="mb-8 p-4 border-2 border-red-500 bg-red-100 text-red-600 font-bold uppercase flex items-center gap-4" role="alert">
           <span>[ ERROR ]</span>
@@ -108,6 +132,7 @@ export const Home: React.FC = () => {
         </div>
       )}
 
+      {/* Grid */}
       {loading ? (
         <div className="py-32 flex items-center justify-center text-retro-black dark:text-white opacity-50">
           <p className="text-2xl uppercase">Loading wallpapers...</p>

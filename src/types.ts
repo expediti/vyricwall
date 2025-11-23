@@ -1,4 +1,4 @@
-export type Category = 'All' | 'Abstract' | 'Nature' | 'Minimal' | 'Dark' | 'Space' | 'City' | 'Laptop' | 'Phone';
+export type Category = 'All' | 'Abstract' | 'Nature' | 'Minimal' | 'Dark' | 'Space' | 'City' | 'Laptop' | 'Phone' | 'Vyric Special';
 
 export const CATEGORIES: Category[] = [
   'Abstract',
@@ -8,7 +8,8 @@ export const CATEGORIES: Category[] = [
   'Space',
   'City',
   'Laptop',
-  'Phone'
+  'Phone',
+  'Vyric Special'
 ];
 
 export interface Wallpaper {
