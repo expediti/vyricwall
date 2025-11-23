@@ -56,14 +56,13 @@ export const WallpaperCard: React.FC<WallpaperCardProps> = ({ wallpaper }) => {
           loading="lazy"
         />
         
-        {/* Grid Overlay effect */}
         <div className="absolute inset-0 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABADeOQ8CXl/xfgAAAABJRU5ErkJggg==')] opacity-20 pointer-events-none"></div>
       </div>
 
-      {/* Category Tag - Always Visible at bottom */}
+      {/* Shows ONLY the NAME field from database */}
       <div className="absolute bottom-0 left-0 right-0 bg-retro-black dark:bg-white text-white dark:text-black border-t-2 border-retro-black dark:border-white p-1 md:p-2">
         <p className="text-sm md:text-lg uppercase truncate text-center">
-          {wallpaper.category || wallpaper.name}
+          {wallpaper.name}
         </p>
       </div>
     </div>
