@@ -30,3 +30,4 @@ export const WallpaperCard: React.FC<WallpaperProps> = ({ wallpaper }) => (
     </div>
   </div>
 );
+ 
