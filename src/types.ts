@@ -1,20 +1,23 @@
-export interface Wallpaper {
-  id: string;
-  url: string;
-  prompt: string;
-  category: string;
-  createdAt: number;
-  aspectRatio: string;
-}
-
-export type Category = 'Iron Man' | 'Machineries' | 'Spider-Man' | 'Avengers' | 'Avatar' | 'Phone' | 'Laptop' | 'All';
+export type Category = 'All' | 'Abstract' | 'Nature' | 'Minimal' | 'Dark' | 'Space' | 'City' | 'Laptop' | 'Phone';
 
 export const CATEGORIES: Category[] = [
-  'Iron Man',
-  'Machineries',
-  'Spider-Man',
-  'Avengers',
-  'Avatar',
-  'Phone',
-  'Laptop'
+  'Abstract',
+  'Nature',
+  'Minimal',
+  'Dark',
+  'Space',
+  'City',
+  'Laptop',
+  'Phone'
 ];
+
+export interface Wallpaper {
+  id: number;
+  image_link: string;
+  name: string;
+  ratio: string;
+  size: string;
+  category?: string;
+  prompt?: string;
+  createdAt?: number;
+}
