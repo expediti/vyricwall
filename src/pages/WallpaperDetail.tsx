@@ -106,12 +106,12 @@ export const WallpaperDetail: React.FC = () => {
         </header>
 
         <div className="flex flex-col lg:flex-row">
-          {/* Image Area - Removed extra padding and background to prevent 'black border' */}
-          <div className="lg:w-2/3 border-b-2 lg:border-b-0 lg:border-r-2 border-retro-black dark:border-white relative bg-transparent flex items-center justify-center">
+          {/* Image Area - No padding, full width/height of container, centered */}
+          <div className="lg:w-2/3 border-b-2 lg:border-b-0 lg:border-r-2 border-retro-black dark:border-white relative bg-transparent flex items-center justify-center p-0 overflow-hidden">
             <img
               src={imgSrc}
               alt={`Detailed view of ${wallpaper.name}`}
-              className="w-full h-auto max-h-[85vh] object-contain"
+              className="w-full h-auto max-h-[85vh] object-contain block"
             />
           </div>
 
